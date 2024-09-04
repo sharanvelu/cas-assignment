@@ -22,20 +22,16 @@ RUN apt-get update && \
         zlib1g-dev
 
 RUN docker-php-ext-configure gd --with-freetype --with-webp  --with-jpeg
-RUN docker-php-ext-configure intl
 
 RUN docker-php-ext-install bcmath
 RUN docker-php-ext-install exif
 RUN docker-php-ext-install gd
 RUN docker-php-ext-install gmp
-RUN docker-php-ext-install intl
-RUN docker-php-ext-install ldap
 RUN docker-php-ext-install mbstring
 RUN docker-php-ext-install mysqli
 RUN docker-php-ext-install pcntl
 RUN docker-php-ext-install pdo
 RUN docker-php-ext-install pdo_mysql
-RUN docker-php-ext-install pdo_pgsql
 RUN docker-php-ext-install sysvmsg
 RUN docker-php-ext-install zip
 
