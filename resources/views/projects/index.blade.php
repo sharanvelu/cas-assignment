@@ -4,7 +4,7 @@
             {{ __('Projects') }}
             <div class="float-right">
                 <a href="{{ route('projects.create') }}" class="items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
-                    Create
+                    <i class="mr-2 fa-solid fa-plus"></i> Create Project
                 </a>
             </div>
         </h2>
@@ -18,7 +18,6 @@
                         <a href="{{ $project->url }}" target="_blank">
                             {{ $project->name }}
                             <span class="float-right">
-    {{--                            <i class="fa-solid fa-eye"></i>--}}
                                 <i class="fa-solid fa-arrow-up-right-from-square"></i>
                             </span>
                         </a>
@@ -36,10 +35,14 @@
                             </x-secondary-button>
                         </a>
 
-                        <!-- TODO: implement delete -->
-                        <x-danger-button class="">
-                            <i class="pr-2 fa-solid fa-trash"></i> {{ __('Delete') }}
-                        </x-danger-button>
+                        <form action="{{ route('projects.destroy', ['project' => $project]) }}" method="post">
+                            @csrf
+                            @method('DELETE')
+
+                            <x-danger-button onclick="event.preventDefault(); if (window.confirm('Are you sure to delete this?')) {this.closest('form').submit();}">
+                                <i class="pr-2 fa-solid fa-trash"></i> {{ __('Delete') }}
+                            </x-danger-button>
+                        </form>
                     </div>
                 </div>
             @endforeach

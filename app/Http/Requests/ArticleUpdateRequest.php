@@ -12,7 +12,7 @@ class ArticleUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,7 @@ class ArticleUpdateRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
-            'content' => 'required|string|min:5|max:500',
+            'content' => 'required|string|min:5|max:1500',
             'meta_title' => 'required|string|max:255',
             'meta_description' => 'required|string|max:255',
             'featured_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',

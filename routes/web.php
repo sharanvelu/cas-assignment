@@ -19,13 +19,15 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__ . '/auth.php';
 
-Route::resource('projects', \App\Http\Controllers\ProjectController::class);
+Route::middleware('auth')->group(function () {
+    Route::resource('projects', \App\Http\Controllers\ProjectController::class);
 
-Route::prefix('projects/{project}/integrations')->group(function () {
-    Route::get('/', [\App\Http\Controllers\ProjectIntegrationController::class, 'index'])->name('projects.integrations.index');
-    Route::patch('/', [\App\Http\Controllers\ProjectIntegrationController::class, 'update'])->name('projects.integrations.update');
+    Route::prefix('projects/{project}/integrations')->group(function () {
+        Route::get('/', [\App\Http\Controllers\ProjectIntegrationController::class, 'index'])->name('projects.integrations.index');
+        Route::patch('/', [\App\Http\Controllers\ProjectIntegrationController::class, 'update'])->name('projects.integrations.update');
+    });
+
+    Route::resource('projects/{project}/articles', \App\Http\Controllers\ArticleController::class);
+
+    Route::post('projects/{project}/articles/{article}/publish', [\App\Http\Controllers\ArticleController::class, 'publish'])->name('articles.publish');
 });
-
-Route::resource('projects/{project}/articles', \App\Http\Controllers\ArticleController::class);
-
-Route::post('projects/{project}/articles/{article}/publish', [\App\Http\Controllers\ArticleController::class, 'publish'])->name('articles.publish');

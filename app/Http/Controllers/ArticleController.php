@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ArticleCreateRequest;
+use App\Http\Requests\ArticleUpdateRequest;
 use App\Models\Article;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class ArticleController extends Controller
@@ -35,8 +37,9 @@ class ArticleController extends Controller
      */
     public function store(ArticleCreateRequest $request, Project $project)
     {
+        DB::beginTransaction();
         try {
-            Article::create([
+            $article = Article::create([
                 'title' => $request->get('title'),
                 'content' => $request->get('content'),
                 'status' => Article::DRAFT,
@@ -47,9 +50,13 @@ class ArticleController extends Controller
                 'featured_image' => storeFile('featured_image', 'articles/featured_image'),
             ]);
 
-            return redirect()->route('articles.index', compact('project'))
+            Article::syncWithHubspot($project, $article);
+
+            DB::commit();
+            return redirect()->route('articles.show', compact('project', 'article'))
                 ->with('success', 'Article Draft created successfully.');
         } catch (\Exception $exception) {
+            DB::rollBack();
             logError($exception, 'Error while creating Article Draft', __METHOD__, ['req' => $request->all()]);
             return redirect()->back()->withInput()->with('error', 'Error while creating Article Draft');
         }
@@ -82,12 +89,13 @@ class ArticleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Project $project, Article $article)
+    public function update(ArticleUpdateRequest $request, Project $project, Article $article)
     {
         if ($article->project_id != $project->id) {
             abort(404);
         }
 
+        DB::beginTransaction();
         try {
             $updateData = [
                 'title' => $request->get('title'),
@@ -105,11 +113,15 @@ class ArticleController extends Controller
 
             $article->update($updateData);
 
+            Article::syncWithHubspot($project, $article);
+
+            DB::commit();
             return redirect()->route('articles.index', compact('project'))
-                ->with('success', 'Article Draft created successfully.');
+                ->with('success', 'Article updated successfully.');
         } catch (\Exception $exception) {
-            logError($exception, 'Error while creating Article Draft', __METHOD__, ['req' => $request->all()]);
-            return redirect()->back()->withInput()->with('error', 'Error while creating Article Draft');
+            DB::rollBack();
+            logError($exception, 'Error while updating Article', __METHOD__, ['req' => $request->all()]);
+            return redirect()->back()->withInput()->with('error', 'Error while updating Article');
         }
     }
 
@@ -124,6 +136,8 @@ class ArticleController extends Controller
 
         try {
             $article->delete();
+
+            Article::deleteWithHubspot($project, $article);
 
             return redirect()->route('articles.index', compact('project'))
                 ->with('success', 'Article deleted successfully');
@@ -151,8 +165,8 @@ class ArticleController extends Controller
 
         $article->update(['status' => Article::PUBLISHED]);
 
-        Article::syncWithHubspot($project, $article);
+        Article::publishWithHubspot($project, $article);
 
-        return redirect()->route('articles.index', compact('project'))->with('success', 'Article published successfully');
+        return redirect()->route('articles.show', compact('project', 'article'))->with('success', 'Article published successfully');
     }
 }

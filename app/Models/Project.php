@@ -17,6 +17,33 @@ class Project extends Model
     protected $fillable = [
         'name',
         'url',
-        'user_id'
+        'user_id',
+        'hubspot_blog_id',
     ];
+
+    public function integrations()
+    {
+        return $this->hasMany(ProjectIntegration::class, 'project_id', 'id');
+    }
+
+    public function getHubspotIntegrations()
+    {
+        return $this->integrations()->where('type', ProjectIntegration::HUBSPOT)->latest()->first();
+    }
+
+    /**
+     * @return void
+     */
+    public function getHubspotIntegrationAccessKey()
+    {
+        return $this->getHubspotIntegrations()?->value;
+    }
+
+    /**
+     * @return true
+     */
+    public function isHubspotIntegrated()
+    {
+        return !empty($this->getHubspotIntegrations());
+    }
 }

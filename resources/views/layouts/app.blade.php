@@ -30,6 +30,26 @@
                 </header>
             @endisset
 
+            @if(session()->has('success'))
+                <div class="pt-5">
+                    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                        <div class="bg-green-400 dark:bg-green-900 shadow text-green-900 dark:text-green-400 p-5 rounded">
+                            {{ session()->get('success') }}
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            @if(session()->has('error'))
+                <div class="pt-5">
+                    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                        <div class="bg-red-400 dark:bg-red-900 shadow text-red-900 dark:text-red-400 p-5 rounded">
+                            {{ session()->get('error') }}
+                        </div>
+                    </div>
+                </div>
+            @endif
+
             <!-- Page Content -->
             <main>
                 {{ $slot }}

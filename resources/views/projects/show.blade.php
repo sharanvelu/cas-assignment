@@ -3,11 +3,16 @@
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Project Detail') }}
             <div class="float-right">
-
                 <a href="{{ route('projects.integrations.index', ['project' => $project]) }}">
                     <x-secondary-button>
-                        Integrations
+                        <i class="mr-3 fa-solid fa-network-wired"></i> Integrations
                     </x-secondary-button>
+                </a>
+
+                <a href="{{ route('articles.index', ['project' => $project]) }}">
+                    <x-primary-button>
+                        <i class="mr-3 fa-regular fa-newspaper"></i> Articles
+                    </x-primary-button>
                 </a>
             </div>
         </h2>
@@ -47,10 +52,14 @@
                     </x-secondary-button>
                 </a>
 
-                <!-- TODO: implement delete -->
-                <x-danger-button class="ms-3">
-                    <i class="pr-2 fa-solid fa-trash"></i> {{ __('Delete Project') }}
-                </x-danger-button>
+                <form action="{{ route('projects.destroy', ['project' => $project]) }}" method="post">
+                    @csrf
+                    @method('DELETE')
+
+                    <x-danger-button class="ms-3" onclick="event.preventDefault(); if (window.confirm('Are you sure to delete this?')) {this.closest('form').submit();}">
+                        <i class="pr-2 fa-solid fa-trash"></i> {{ __('Delete Project') }}
+                    </x-danger-button>
+                </form>
             </div>
         </div>
     </div>

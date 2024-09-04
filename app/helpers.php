@@ -10,6 +10,7 @@ function logError(Throwable $throwable, $message, $location, $details = [])
         'code' => $throwable->getCode(),
         'location' => $location,
         'trace' => $throwable->getTraceAsString(),
+        'details' => $details,
     ]);
 }
 
@@ -85,3 +86,13 @@ function retrieveFile($filePath)
     return \Illuminate\Support\Facades\Storage::$method($filePath, $expiry);
 }
 
+function getStatusBadge($status)
+{
+    $color = match ($status) {
+        \App\Models\Article::DRAFT => 'amber',
+        \App\Models\Article::PUBLISHED => 'green',
+        \App\Models\Article::SCHEDULED => 'cyan',
+    };
+
+    return '<span class="text-gray-400 dark:text-gray-800 bg-' . $color . '-600 px-2 py-1 rounded">' . strtoupper($status) . '</span>';
+}
