@@ -2,6 +2,14 @@
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Project Detail') }}
+            <div class="float-right">
+
+                <a href="{{ route('projects.integrations.index', ['project' => $project]) }}">
+                    <x-secondary-button>
+                        Integrations
+                    </x-secondary-button>
+                </a>
+            </div>
         </h2>
     </x-slot>
 
