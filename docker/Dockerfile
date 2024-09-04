@@ -58,6 +58,11 @@ COPY docker/entrypoint.sh /usr/bin/entrypoint.sh
 RUN chmod +x /usr/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
 
+COPY . /var/www/html
+
+RUN composer install
+RUN npm run build
+
 CMD ["php-fpm"]
 
 RUN rm -rf /var/www/html/public \
