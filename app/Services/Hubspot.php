@@ -39,7 +39,7 @@ class Hubspot
     }
 
     /**
-     * @return void
+     * @return mixed
      */
     public function listBlogs()
     {
