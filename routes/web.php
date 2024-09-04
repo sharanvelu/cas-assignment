@@ -20,3 +20,7 @@ Route::middleware('auth')->group(function () {
 require __DIR__ . '/auth.php';
 
 Route::resource('projects', \App\Http\Controllers\ProjectController::class);
+
+Route::resource('projects/{project}/articles', \App\Http\Controllers\ArticleController::class);
+
+Route::post('projects/{project}/articles/{article}/publish', [\App\Http\Controllers\ArticleController::class, 'publish'])->name('articles.publish');
