@@ -62,7 +62,6 @@ class Article extends Model
             return true;
         }
 
-        session()->flash('error', 'Hubspot not integrated for this project');
         return false;
     }
 
