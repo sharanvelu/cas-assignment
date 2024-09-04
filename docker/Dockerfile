@@ -60,7 +60,7 @@ ENTRYPOINT ["entrypoint.sh"]
 
 COPY . /var/www/html
 
-RUN composer install
+RUN composer install --ignore-platform-reqs
 RUN npm run build
 
 CMD ["php-fpm"]
