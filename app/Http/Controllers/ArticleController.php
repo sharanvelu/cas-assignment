@@ -45,7 +45,6 @@ class ArticleController extends Controller
                 'status' => Article::DRAFT,
                 'project_id' => $project->id,
                 'user_id' => auth()->id(),
-                'meta_title' => $request->get('meta_title'),
                 'meta_description' => $request->get('meta_description'),
                 'featured_image' => storeFile('featured_image', 'articles/featured_image'),
             ]);
@@ -100,10 +99,8 @@ class ArticleController extends Controller
             $updateData = [
                 'title' => $request->get('title'),
                 'content' => $request->get('content'),
-                'status' => Article::DRAFT,
                 'project_id' => $project->id,
                 'user_id' => auth()->id(),
-                'meta_title' => $request->get('meta_title'),
                 'meta_description' => $request->get('meta_description'),
             ];
 

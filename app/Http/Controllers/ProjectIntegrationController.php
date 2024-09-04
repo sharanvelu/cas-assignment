@@ -41,6 +41,7 @@ class ProjectIntegrationController extends Controller
             'value' => $request->get('api_key'),
         ]);
 
-        return redirect()->route('projects.integrations.index', ['project' => $project]);
+        return redirect()->route('projects.integrations.index', ['project' => $project])
+            ->with('success', 'Integration updated successfully');
     }
 }

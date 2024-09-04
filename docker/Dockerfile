@@ -59,6 +59,7 @@ COPY . /var/www/html
 RUN chmod -R 777 /var/www/html/storage
 RUN composer install --ignore-platform-reqs
 RUN npm install && npm run build
+RUN php artisan storage:link
 
 CMD ["php-fpm"]
 

@@ -38,6 +38,13 @@
 
                 </div>
             </div>
+            <div class="mt-6 flex justify-end">
+                <a href="{{ route('projects.show', ['project' => $project]) }}">
+                    <x-secondary-button>
+                        <i class="pr-2 fa-solid fa-arrow-left"></i>{{ __('Back to Project Detail') }}
+                    </x-secondary-button>
+                </a>
+            </div>
         </div>
     </div>
 </x-app-layout>
