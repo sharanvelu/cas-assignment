@@ -62,5 +62,4 @@ RUN npm run build
 
 CMD ["php-fpm"]
 
-RUN rm -rf /var/www/html/public \
-    && apt-get clean
+RUN apt-get clean
